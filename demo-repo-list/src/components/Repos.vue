@@ -2,22 +2,22 @@
   <div class="repos">
     <div class="holder">
     <form @submit.prevent="addRepo">
-      <input type="text" placeholder="Enter a Github user ..." v-model="repo" v-validate="'min:2'" name="repo" >
+      <input type="text" placeholder="Enter a Github user ..." v-model="user" v-validate="'min:2'" name="user" >
       
       <transition name="alert-in" enter-active-class="animated flipInX" leave-active-class="animated flipOutX">
-        <p class="alert" v-if="errors.has('repo')">{{ errors.first('repo') }}</p>
+        <p class="alert" v-if="errors.has('user')">{{ errors.first('user') }}</p>
       </transition>
     </form>
       <ul>
       <transition-group name="list" enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
         <li v-for="(data, index) in repos" :key='index'>
-          {{ data.repo }}
+          {{ data.user }}
           <i class="fa fa-minus-circle" v-on:click="remove(index)"></i>
         </li>
       </transition-group>
       </ul>
 
-      <p>These are the top repos from each user.</p>
+      <p>These are the latest repos from each user.</p>
     </div>
   </div>
 </template>
@@ -27,17 +27,19 @@ export default {
   name: "Repos",
   data() {
     return {
-      repo: '',
-      repos: []
+      user: '',
+      repos: [],
     };
   },
   methods: {
     addRepo() {
       this.$validator.validateAll().then((result) => {
         if (result) {
-          this.repos.push({repo: this.repo})
+          let r = this.requestRepositories();
+          console.log(`R: ${r}`);
+          this.repos.push({user: this.user, repo: r})
           console.log(Object.entries(this.repos));
-          this.repo = '';
+          this.user = '';
         } else {
           console.log('Not valid');
         }
@@ -45,7 +47,31 @@ export default {
     },
     remove(id) {
       this.repos.splice(id, 1);
-    }
+    },
+    requestRepositories() {
+      this.key = process.env.VUE_APP_GITHUB_ACCESS_TOKEN;
+      // call apollo and update the store with the response
+      
+      // return fetch('https://api.github.com/graphql', {
+      //         method: 'POST',
+      //         headers: {
+      //             "Authorization": "Bearer " + this.key,
+      //             "Content-Type": "application/json; charset=utf-8"
+      //         },
+      //         body: "{\"query\":\"query{ user(login: \\\"erikcox\\\"){repositories(last:1, affiliations: OWNER){ nodes { name owner{ login}}}}}\",\"variables\":\"{}\"}"
+      //     })
+      //     .then((response) => {
+      //         response.json().then((data) => {
+      //           // There should be a better way to call this ---v
+      //           console.log(`repo is: ${data.data.user.repositories.nodes[0].name}`);
+      //           return data.data.user.repositories.nodes[0].name;
+      //         });
+      //     })
+      //     .catch(function(error) {
+      //         console.log('Request failed', error);
+      //         return 'error';
+      //     });
+    },
   }
 };
 </script>
