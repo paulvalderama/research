@@ -1,6 +1,6 @@
 <template>
-  <div class="flex mt2 items-start">
-    <div class="flex items-center">
+  <div class='flex mt2 items-start'>
+    <div class='flex items-center'>
       <span class="gray">{{linkNumber}}.</span>
       <div v-if="userId" class="ml1 gray f11 upvote" @click="voteForLink()">▲</div>
     </div>
@@ -15,7 +15,7 @@
 
 <script>
 import { timeDifferenceForDate } from '../utils'
-import { GC_USER_ID, GC_USER_NAME } from '../constants/settings'
+import { GC_USER_ID } from '../constants/settings'
 import { ALL_LINKS_QUERY, CREATE_VOTE_MUTATION } from '../constants/graphql'
 
 export default {
@@ -38,7 +38,7 @@ export default {
     voteForLink () {
       const userId = localStorage.getItem(GC_USER_ID)
       const voterIds = this.link.votes.map(vote => vote.user.id)
-      const userName = localStorage.getItem(GC_USER_NAME)
+      // const userName = localStorage.getItem(GC_USER_NAME)
       if (voterIds.includes(userId)) {
         alert(`User (${userId}) already voted for this link.`)
         return
@@ -51,10 +51,14 @@ export default {
           linkId
         },
         update: (store, { data: { createVote } }) => {
+          // eslint-disable-next-line
+          const CSS_COLOR_NAMES = ["AliceBlue","AntiqueWhite","Aqua","Aquamarine","Azure","Beige","Bisque","Black","BlanchedAlmond","Blue","BlueViolet","Brown","BurlyWood","CadetBlue","Chartreuse","Chocolate","Coral","CornflowerBlue","Cornsilk","Crimson","Cyan","DarkBlue","DarkCyan","DarkGoldenRod","DarkGray","DarkGrey","DarkGreen","DarkKhaki","DarkMagenta","DarkOliveGreen","Darkorange","DarkOrchid","DarkRed","DarkSalmon","DarkSeaGreen","DarkSlateBlue","DarkSlateGray","DarkSlateGrey","DarkTurquoise","DarkViolet","DeepPink","DeepSkyBlue","DimGray","DimGrey","DodgerBlue","FireBrick","FloralWhite","ForestGreen","Fuchsia","Gainsboro","GhostWhite","Gold","GoldenRod","Gray","Grey","Green","GreenYellow","HoneyDew","HotPink","IndianRed","Indigo","Ivory","Khaki","Lavender","LavenderBlush","LawnGreen","LemonChiffon","LightBlue","LightCoral","LightCyan","LightGoldenRodYellow","LightGray","LightGrey","LightGreen","LightPink","LightSalmon","LightSeaGreen","LightSkyBlue","LightSlateGray","LightSlateGrey","LightSteelBlue","LightYellow","Lime","LimeGreen","Linen","Magenta","Maroon","MediumAquaMarine","MediumBlue","MediumOrchid","MediumPurple","MediumSeaGreen","MediumSlateBlue","MediumSpringGreen","MediumTurquoise","MediumVioletRed","MidnightBlue","MintCream","MistyRose","Moccasin","NavajoWhite","Navy","OldLace","Olive","OliveDrab","Orange","OrangeRed","Orchid","PaleGoldenRod","PaleGreen","PaleTurquoise","PaleVioletRed","PapayaWhip","PeachPuff","Peru","Pink","Plum","PowderBlue","Purple","Red","RosyBrown","RoyalBlue","SaddleBrown","Salmon","SandyBrown","SeaGreen","SeaShell","Sienna","Silver","SkyBlue","SlateBlue","SlateGray","SlateGrey","Snow","SpringGreen","SteelBlue","Tan","Teal","Thistle","Tomato","Turquoise","Violet","Wheat","White","WhiteSmoke","Yellow","YellowGreen"]
           this.updateStoreAfterVote(store, createVote, linkId)
+          const randomColor = CSS_COLOR_NAMES[Math.floor((Math.random()) * CSS_COLOR_NAMES.length)]
+          // eslint-disable-next-line
+          console.log(`%c ${userId} added a vote. store update: ${JSON.stringify(store.data, null, 2)}`, `color: ${randomColor}`)
         }
       })
-      console.log(`new state change: +++++${userName} added a vote!`)
     },
     updateStoreAfterVote (store, createVote, linkId) {
       const data = store.readQuery({
