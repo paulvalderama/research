@@ -19,20 +19,20 @@ import { GC_USER_ID } from '../constants/settings'
 import { ALL_LINKS_QUERY, CREATE_VOTE_MUTATION } from '../constants/graphql'
 
 export default {
-  name: 'LinkItem',
+  name: "LinkItem",
   computed: {
-    userId () {
-      return this.$root.$data.userId
+    userId() {
+      return this.$root.$data.userId;
     },
-    linkNumber () {
-      if (this.$route.path.includes('new')) {
-        return (this.pageNumber - 1) * this.linksPerPage + (this.index + 1)
+    linkNumber() {
+      if (this.$route.path.includes("new")) {
+        return (this.pageNumber - 1) * this.linksPerPage + (this.index + 1);
       } else {
-        return this.index + 1
+        return this.index + 1;
       }
     }
   },
-  props: ['link', 'index'],
+  props: ["link", "index"],
   methods: {
     timeDifferenceForDate,
     voteForLink () {
@@ -40,10 +40,10 @@ export default {
       const voterIds = this.link.votes.map(vote => vote.user.id)
       // const userName = localStorage.getItem(GC_USER_NAME)
       if (voterIds.includes(userId)) {
-        alert(`User (${userId}) already voted for this link.`)
-        return
+        alert(`User (${userId}) already voted for this link.`);
+        return;
       }
-      const linkId = this.link.id
+      const linkId = this.link.id;
       this.$apollo.mutate({
         mutation: CREATE_VOTE_MUTATION,
         variables: {
@@ -60,25 +60,25 @@ export default {
         }
       })
     },
-    updateStoreAfterVote (store, createVote, linkId) {
+    updateStoreAfterVote(store, createVote, linkId) {
       const data = store.readQuery({
         query: ALL_LINKS_QUERY
-      })
-      const votedLink = data.allLinks.find(link => link.id === linkId)
-      votedLink.votes = createVote.link.votes
-      store.writeQuery({ query: ALL_LINKS_QUERY, data })
+      });
+      const votedLink = data.allLinks.find(link => link.id === linkId);
+      votedLink.votes = createVote.link.votes;
+      store.writeQuery({ query: ALL_LINKS_QUERY, data });
     }
   }
-}
+};
 </script>
 
 <style scoped>
-  .upvote {
-    cursor: pointer;
-  }
+.upvote {
+  cursor: pointer;
+}
 
-  .link {
-    text-decoration: none;
-    color: black;
-  }
+.link {
+  text-decoration: none;
+  color: black;
+}
 </style>
