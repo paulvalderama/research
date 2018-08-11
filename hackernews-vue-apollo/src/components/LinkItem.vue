@@ -14,9 +14,12 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { timeDifferenceForDate } from '../utils'
 import { GC_USER_ID } from '../constants/settings'
 import { ALL_LINKS_QUERY, CREATE_VOTE_MUTATION } from '../constants/graphql'
+import ApolloDev from '../utils/TimeTravel'
+
 
 export default {
   name: "LinkItem",
@@ -39,12 +42,27 @@ export default {
       const userId = localStorage.getItem(GC_USER_ID)
       const voterIds = this.link.votes.map(vote => vote.user.id)
       // const userName = localStorage.getItem(GC_USER_NAME)
-      if (voterIds.includes(userId)) {
-        alert(`User (${userId}) already voted for this link.`);
-        return;
-      }
+      // disable limitations on vote for testing;
+      // if (voterIds.includes(userId)) {
+      //   alert(`User (${userId}) already voted for this link.`);
+      //   return;
+      // }
       const linkId = this.link.id;
-      this.$apollo.mutate({
+
+      /* const _mutate = this.$apollo.mutate;
+
+      this.$apollo.mutate = function(configObj) {
+        console.log('before mutation: ', JSON.stringify())
+        const output = _mutate.apply(this, arguments)
+        const postMutation = output.then(res => console.log('after mutation: ', res.data))
+        // console.log('after mutation: ', postMutation)
+        // return output;
+      },
+      */
+    //  console.log(typeof ApolloDev)
+     console.log('dollarApollo in LinkItem: ', this)
+     this.ApolloDev = ApolloDev.bind(this);
+     this.ApolloDev({
         mutation: CREATE_VOTE_MUTATION,
         variables: {
           userId,
@@ -56,8 +74,12 @@ export default {
           this.updateStoreAfterVote(store, createVote, linkId)
           const randomColor = CSS_COLOR_NAMES[Math.floor((Math.random()) * CSS_COLOR_NAMES.length)]
           // eslint-disable-next-line
-          console.log(`%c ${userId} added a vote. store update: ${JSON.stringify(store.data, null, 2)}`, `color: ${randomColor}`)
+          // console.log(`%c ${userId} added a vote. store update: ${JSON.stringify(store.data, null, 2)}`, `color: ${randomColor}`)
         }
+      })
+      .then(res => {
+        console.log('=====apollo object=====: ', this.$apollo);
+        console.log('=====state data post-mutation=====: ', res.data);
       })
     },
     updateStoreAfterVote(store, createVote, linkId) {
