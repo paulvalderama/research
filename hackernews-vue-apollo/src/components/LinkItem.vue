@@ -49,7 +49,7 @@ export default {
       // }
       const linkId = this.link.id;
 
-      /* const _mutate = this.$apollo.mutate;
+      const _mutate = this.$apollo.mutate;
 
       this.$apollo.mutate = function(configObj) {
         console.log('before mutation: ', JSON.stringify())
