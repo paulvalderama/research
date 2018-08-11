@@ -77,10 +77,10 @@ export default {
           // console.log(`%c ${userId} added a vote. store update: ${JSON.stringify(store.data, null, 2)}`, `color: ${randomColor}`)
         }
       })
-      .then(res => {
-        console.log('=====apollo object=====: ', this.$apollo);
-        console.log('=====state data post-mutation=====: ', res.data);
-      })
+      // .then(res => {
+      //   console.log('=====apollo object=====: ', this.$apollo);
+      //   console.log('=====state data post-mutation=====: ', res.data);
+      // })
     },
     updateStoreAfterVote(store, createVote, linkId) {
       const data = store.readQuery({
