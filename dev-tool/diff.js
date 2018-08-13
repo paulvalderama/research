@@ -175,7 +175,7 @@ chrome.devtools.panels.create(
       switch (change.kind) {
         case "N":
           output.innerHTML = `<details> 
-        <summary> State diff </summary>
+        <summary> State Diff</summary>
         <p>Added: ${change.path[change.path.length - 1]}: <em>${JSON.stringify(
             change.rhs
           )}</em> </p>
@@ -184,7 +184,7 @@ chrome.devtools.panels.create(
 
         case "D":
           output.innerHTML = `<details> 
-        <summary> State diff </summary>
+        <summary> State Diff </summary>
         <p>Removed: <del>${
           change.path[change.path.length - 1]
         }: <em>${JSON.stringify(change.lhs)}</em></del>
@@ -194,10 +194,10 @@ chrome.devtools.panels.create(
 
         case "E":
           output.innerHTML = `<details> 
-        <summary> State diff </summary>
-        <p>Changed: <del>${
-          change.path[change.path.length - 1]
-        }: <em>${JSON.stringify(change.lhs)}</em></del> -> ${
+        <summary> State Diff </summary>
+        <p>Changed: ${state2} <del>${
+            change.path[change.path.length - 1]
+          }: <em>${JSON.stringify(change.lhs)}</em></del> -> ${
             change.path[change.path.length - 1]
           }: <em>${JSON.stringify(change.rhs)}</em>
             </p>
@@ -210,3 +210,12 @@ chrome.devtools.panels.create(
     });
   }
 );
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.msg === "something_completed") {
+    //  To do something
+    alert("Got it!");
+    console.log(request.data.subject);
+    console.log(request.data.content);
+  }
+});

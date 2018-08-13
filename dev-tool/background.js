@@ -43,3 +43,16 @@ chrome.tabs.query({ active: true }, function(tabs) {
   });
   console.log("activeTabs = ", activeTabs);
 });
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (!request.state.type && !request.state.devtoolsEnabled) {
+    alert(JSON.stringify(request.state));
+    chrome.runtime.sendMessage({
+      msg: "something_completed",
+      data: {
+        subject: "Loading",
+        content: "Just completed!"
+      }
+    });
+  }
+});

@@ -1,0 +1,4 @@
+window.addEventListener("message", function(event) {
+  if (event.source != window) return;
+  chrome.runtime.sendMessage({ type: "currentState", state: event.data });
+});
