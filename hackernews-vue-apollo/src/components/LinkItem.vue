@@ -42,7 +42,7 @@ export default {
       const voterIds = this.link.votes.map(vote => vote.user.id);
       const linkId = this.link.id;
 
-      console.log("dollarApollo in LinkItem: ", this);
+      //console.log("dollarApollo in LinkItem: ", this);
       this.ApolloDev = ApolloDev.bind(this);
       this.ApolloDev({
         mutation: CREATE_VOTE_MUTATION,

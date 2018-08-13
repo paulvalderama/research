@@ -216,6 +216,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
           // output.innerHTML += `Change within array`;
           break;
       }
+      // TODO: figure out why counter runs so many times (too many messages sent from TimeTravel.js?)
       counter++;
     });
   }
