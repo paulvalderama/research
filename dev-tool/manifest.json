@@ -8,7 +8,21 @@
     "persistent": true,
     "scripts": ["background.js"]
   },
-  "permissions": ["webRequest", "*://*/*"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "permissions": [
+    "<all_urls>",
+    "webRequest",
+    "webRequestBlocking",
+    "background",
+    "activeTab",
+    "storage",
+    "*://*/*"
+  ],
   "devtools_page": "devtools.html",
   "icons": {
     "16": "icon16.png",

@@ -15,11 +15,10 @@
 
 <script>
 /* eslint-disable */
-import { timeDifferenceForDate } from '../utils'
-import { GC_USER_ID } from '../constants/settings'
-import { ALL_LINKS_QUERY, CREATE_VOTE_MUTATION } from '../constants/graphql'
-import ApolloDev from '../utils/TimeTravel'
-
+import { timeDifferenceForDate } from "../utils";
+import { GC_USER_ID } from "../constants/settings";
+import { ALL_LINKS_QUERY, CREATE_VOTE_MUTATION } from "../constants/graphql";
+import ApolloDev from "../utils/TimeTravel";
 
 export default {
   name: "LinkItem",
@@ -38,29 +37,22 @@ export default {
   props: ["link", "index"],
   methods: {
     timeDifferenceForDate,
-    voteForLink () {
-      const userId = localStorage.getItem(GC_USER_ID)
-      const voterIds = this.link.votes.map(vote => vote.user.id)
-      // disable limitations on vote for testing;
-      // if (voterIds.includes(userId)) {
-      //   alert(`User (${userId}) already voted for this link.`);
-      //   return;
-      // }
+    voteForLink() {
+      const userId = localStorage.getItem(GC_USER_ID);
+      const voterIds = this.link.votes.map(vote => vote.user.id);
       const linkId = this.link.id;
-  
-     this.ApolloDev = ApolloDev.bind(this);
-     this.ApolloDev({
+
+      //console.log("dollarApollo in LinkItem: ", this);
+      this.ApolloDev = ApolloDev.bind(this);
+      this.ApolloDev({
         mutation: CREATE_VOTE_MUTATION,
         variables: {
           userId,
           linkId
         },
         update: (store, { data: { createVote } }) => {
-          this.updateStoreAfterVote(store, createVote, linkId)
-          const randomColor = CSS_COLOR_NAMES[Math.floor((Math.random()) * CSS_COLOR_NAMES.length)]
+          this.updateStoreAfterVote(store, createVote, linkId);
         }
-      }).then(data => {
-        console.log('hello world! ', data)
       });
     },
     updateStoreAfterVote(store, createVote, linkId) {
