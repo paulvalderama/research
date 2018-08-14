@@ -729,7 +729,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         case "E":
           output.innerHTML += `<details>
           <summary>${counter}: Edit</summary>
-          <p>Changed: ${change.path[change.path.length - 1]}<del>${
+          <p>Changed: <del>${
             change.path[change.path.length - 1]
           }: <em>${JSON.stringify(change.lhs)}</em></del> -> ${
             change.path[change.path.length - 1]
@@ -742,6 +742,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
           // output.innerHTML += `Change within array`;
           break;
       }
+      // TODO: figure out why counter runs so many times (too many messages sent from TimeTravel.js?)
       counter++;
     });
   }

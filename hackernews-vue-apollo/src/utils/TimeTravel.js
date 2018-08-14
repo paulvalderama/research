@@ -1,7 +1,7 @@
 /* eslint-disable */
 export default function ApolloDev(configObj) {
-  // Full cache before mutation
   // TODO: Fix this, it runs too many times
+  // Full cache before mutation
   // window.postMessage(
   //   this.$apolloProvider.clients.defaultClient.cache.data.data,
   //   "*"
