@@ -23,7 +23,7 @@ export default function ApolloDev(configObj) {
       const newState = this.$apolloProvider.clients.defaultClient.cache.data.data;
       const newStateLength = Object.keys(newState).length;
       console.log('numkeys new state: ', newStateLength)
-      console.log('new state: ', newState);
+      window.postMessage([prevState, newState], "*");
       resolve(res);
     })
   })
