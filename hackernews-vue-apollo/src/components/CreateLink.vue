@@ -19,6 +19,7 @@
 <script>
 import { ALL_LINKS_QUERY, CREATE_LINK_MUTATION } from '../constants/graphql.js'
 import { GC_USER_ID } from '../constants/settings'
+import ApolloDev from '../utils/TimeTravel.js'
 
 export default {
   name: 'CreateLink',
@@ -41,7 +42,8 @@ export default {
       this.description = ''
       this.url = ''
 
-      this.$apollo.mutate({
+      this.ApolloDev = ApolloDev.bind(this)
+      this.ApolloDev({
         mutation: CREATE_LINK_MUTATION,
         variables: {
           description: newDescription,
@@ -54,6 +56,7 @@ export default {
           store.writeQuery({ query: ALL_LINKS_QUERY, data })
         }
       }).then((data) => {
+        console.log('promise data: ', data)
         this.$router.push({path: '/'})
       }).catch((error) => {
         console.error(error)
