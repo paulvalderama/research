@@ -46,11 +46,9 @@ chrome.tabs.query({ active: true }, function(tabs) {
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (!request.state.type && !request.state.devtoolsEnabled) {
-    // TODO: Only check messages from TimeTravel.js (name messages). Remove 'subject'
     chrome.runtime.sendMessage({
       msg: "state_changed",
       data: {
-        subject: "State Changing",
         state: request.state
       }
     });
